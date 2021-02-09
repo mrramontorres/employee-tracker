@@ -39,23 +39,66 @@ function startApp() {
         ]
     })
     .then(function(answer) {
-        switch (answer.action) {
-
+        switch (answer.choice) {
+        
           case "View all departments.":
-          console.log("1st");
+          viewAllDepartments();
           break;
 
           case "View all roles.":
-          console.log("2nd");
+          viewAllRoles();
           break;
 
           case "View all employees.":
-          console.log("3rd");
+          viewAllEmployees();
           break;
 
           case "Exit.":
           connection.end();
           break;
         }
-      });
+
+    });
 };
+
+// View all departments
+// =======================
+function viewAllDepartments() {
+    let query = "SELECT * FROM departments";
+    connection.query(query, 
+        function(err,res){
+            if(err) throw err;
+            console.table(" \n");
+            console.table(res);
+            console.table("\n \n \n");
+        })
+    startApp();
+}
+
+// View all roles
+// =======================
+function viewAllRoles() {
+    let query = "SELECT * FROM roles";
+    connection.query(query, 
+        function(err,res){
+            if(err) throw err;
+            console.table(" \n");
+            console.table(res);
+            console.table("\n \n \n");
+        })
+    startApp();
+}
+
+// View all employees
+// =======================
+function viewAllEmployees() {
+    let query = "SELECT * FROM employees";
+    connection.query(query, 
+        function(err,res){
+            if(err) throw err;
+            console.table(" \n");
+            console.table(res);
+            console.table("\n \n \n");
+        })
+    startApp();
+}
