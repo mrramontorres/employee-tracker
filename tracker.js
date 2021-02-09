@@ -6,16 +6,11 @@ var inquirer = require("inquirer");
 // Connect to the database
 // =============================================================
 var connection = mysql.createConnection({
-
-// Your port if not 3306
-port: 3306,
-
-// Your username
-user: "root",
-
-// Your password
-password: "",
-database: "company_DB"
+    host: "localhost",
+    port: 3306,
+    user: "root",
+    password: "",
+    database: "companyDB"
 });
 
 // Connection confirmation

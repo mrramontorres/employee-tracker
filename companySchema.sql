@@ -1,32 +1,29 @@
-/* Schema for SQL database/table. */
-DROP DATABASE IF EXISTS company_DB;
+DROP DATABASE IF EXISTS companyDB;
 
-/* Creates database */
-CREATE DATABASE company_DB;
-USE company_DB;
+CREATE DATABASE companyDB;
 
-/* Create department table */
-CREATE TABLE department (
+USE companyDB;
+
+CREATE TABLE departments (
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) NOT NULL,
   PRIMARY KEY (id)
 );
 
-/* Create role table */
-CREATE TABLE role (
+CREATE TABLE roles (
   id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) NOT NULL,
   salary DECIMAL(10,2) NOT NULL,
-  department_id INT NOT NULL,
+  departments_id INT NOT NULL,
   PRIMARY KEY (id)
 );
 
-/* Create employee table */
-CREATE TABLE employee (
+CREATE TABLE employees (
   id INT NOT NULL AUTO_INCREMENT,
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
-  role_id INT NOT NULL,
+  roles_id INT NOT NULL,
   manager_id INT NULL,
   PRIMARY KEY (id)
 );
+
