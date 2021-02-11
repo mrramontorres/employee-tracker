@@ -19,7 +19,7 @@ var connection = mysql.createConnection({
 // =============================================================
 connection.connect((err) => {
     if (err) throw err;
-    console.log('connected as id ' + connection.threadId);
+    console.log('connected as id ' + connection.threadId +" \n");
     startApp();
 });
 
@@ -116,40 +116,59 @@ function viewAllEmployees() {
 // =======================
 function addDepartment() {
     inquirer
-    .prompt({
-        name: "addDepartment",
-        type: "input",
-        message: "What department would you like to add?"
-    })
+    .prompt([
+        {
+            name: "addDepartment",
+            type: "input",
+            message: "What department would you like to add?"
+        }
+    ])
     .then(function(answer) {
     let query = "INSERT INTO departments (name) VALUES (?)";
     connection.query(query, [answer.addDepartment],
         function(err,res){
             if(err) throw err;
             console.clear();
-            console.log("Department Added.");
+            console.log("Department added.");
         });
     startApp();
     })
 }
 
-// Delete a department
+// Add a role
 // =======================
-function addDepartment() {
-    inquirer
-    .prompt({
-        name: "addDepartment",
-        type: "input",
-        message: "What department would you like to add?"
-    })
-    .then(function(answer) {
-    let query = "INSERT INTO departments (name) VALUES (?)";
-    connection.query(query, [answer.addDepartment],
-        function(err,res){
-            if(err) throw err;
-            console.clear();
-            console.log("Department Added.");
-        });
-    startApp();
+function addRole() {
+    const queryDepartment =  "SELECT * FROM departments";
+    connection.query(queryDepartment, (err, results) => {
+        if(err) throw err;
+        console.log(results);
+        inquirer
+        .prompt([
+            {
+                name: "addTitle",
+                type: "input",
+                message: "What title would you like to add?"
+            },
+            {
+                type: "input",
+                name: "addSalary",
+                message: "What is the salary?"
+            },
+            {
+                name: "connectDep",
+                type: "input",
+                message: "What department is this for?"
+            },
+        ])
+        .then(function(answer) {
+        let query = "INSERT INTO roles (title, salary, departments_id) VALUES (?, ?, ?)";
+        connection.query(query, [answer.addTitle, answer.addSalary, answer.connectDep],
+            function(err,res){
+                if(err) throw err;
+                console.clear();
+                console.log("Role added.");
+            });
+        startApp();
+        })
     })
 }
