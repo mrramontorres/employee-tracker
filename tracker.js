@@ -155,20 +155,22 @@ function addRole() {
                 message: "What is the salary?"
             },
             {
-                name: "addDepartmentRole",
+                name: "choice",
                 type: "list",
                 message: "What department is this for?",
                 choices: results.map(obj =>  obj.name)
             },
         ])
         .then(function(answer) {
+        let depID = results.find(obj => obj.name === answer.choice).id;
         let query = "INSERT INTO roles (title, salary, departments_id) VALUES (?, ?, ?)";
-        connection.query(query, [answer.addTitle, answer.addSalary, answer.connectDep],
+        console.log(depID);
+        /*connection.query(query, [answer.addTitle, answer.addSalary, depID],
             function(err,res){
                 if(err) throw err;
                 console.clear();
                 console.log("Role added.");
-            });
+            });*/
         startApp();
         })
     })
