@@ -157,14 +157,8 @@ function addRole() {
             {
                 name: "addDepartmentRole",
                 type: "list",
-                choices: function() {
-                    const departmentArray = results.map(item => {
-                        const container = {};
-                        container[item.name] = item.name;
-                        return container;
-                    })
-                },
-                message: "What department is this for?"
+                message: "What department is this for?",
+                choices: results.map(obj =>  obj.name)
             },
         ])
         .then(function(answer) {
