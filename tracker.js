@@ -121,13 +121,21 @@ function viewAllEmployees() {
 // Add a department
 // =======================
 function addDepartment() {
-    let query = "SELECT * FROM departments";
-    connection.query(query, 
+    inquirer
+    .prompt({
+        name: "addDepartment",
+        type: "input",
+        message: "What department would you like to add?"
+    })
+    .then(function(answer) {
+    let query = "INSERT INTO departments (name) VALUES (?)";
+    connection.query(query, [answer.addDepartment],
         function(err,res){
             if(err) throw err;
-            console.table(" \n");
+            console.table("\n \n Department Added!");
             console.table(res);
             console.table("\n \n \n");
-        })
+        });
     startApp();
+    })
 }
