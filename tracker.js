@@ -83,9 +83,7 @@ function viewAllDepartments() {
     connection.query(query, 
         function(err,res){
             if(err) throw err;
-            console.table(" \n");
-            console.table(res);
-            console.table("\n \n \n");
+            console.table(['Departments'], res);
         })
     startApp();
 }
@@ -97,9 +95,7 @@ function viewAllRoles() {
     connection.query(query, 
         function(err,res){
             if(err) throw err;
-            console.table(" \n");
-            console.table(res);
-            console.table("\n \n \n");
+            console.table(['Roles'], res);
         })
     startApp();
 }
@@ -111,9 +107,7 @@ function viewAllEmployees() {
     connection.query(query, 
         function(err,res){
             if(err) throw err;
-            console.table(" \n");
-            console.table(res);
-            console.table("\n \n \n");
+            console.table(['Employees'], res);
         })
     startApp();
 }
@@ -132,9 +126,29 @@ function addDepartment() {
     connection.query(query, [answer.addDepartment],
         function(err,res){
             if(err) throw err;
-            console.table("\n \n Department Added!");
-            console.table(res);
-            console.table("\n \n \n");
+            console.clear();
+            console.log("Department Added.");
+        });
+    startApp();
+    })
+}
+
+// Delete a department
+// =======================
+function addDepartment() {
+    inquirer
+    .prompt({
+        name: "addDepartment",
+        type: "input",
+        message: "What department would you like to add?"
+    })
+    .then(function(answer) {
+    let query = "INSERT INTO departments (name) VALUES (?)";
+    connection.query(query, [answer.addDepartment],
+        function(err,res){
+            if(err) throw err;
+            console.clear();
+            console.log("Department Added.");
         });
     startApp();
     })
