@@ -35,12 +35,15 @@ function startApp() {
             "View all departments.",
             "View all roles.",
             "View all employees.",
+            "Add a department.",
+            "Add a role.",
+            "Add an employee.",
             "Exit."
         ]
     })
     .then(function(answer) {
         switch (answer.choice) {
-        
+
           case "View all departments.":
           viewAllDepartments();
           break;
@@ -51,6 +54,18 @@ function startApp() {
 
           case "View all employees.":
           viewAllEmployees();
+          break;
+
+          case "Add a department.":
+          addDepartment();
+          break;
+
+          case "Add a role.":
+          addRole();
+          break;
+
+          case "Add an employee.":
+          addEmployee();
           break;
 
           case "Exit.":
@@ -93,6 +108,20 @@ function viewAllRoles() {
 // =======================
 function viewAllEmployees() {
     let query = "SELECT * FROM employees";
+    connection.query(query, 
+        function(err,res){
+            if(err) throw err;
+            console.table(" \n");
+            console.table(res);
+            console.table("\n \n \n");
+        })
+    startApp();
+}
+
+// Add a department
+// =======================
+function addDepartment() {
+    let query = "SELECT * FROM departments";
     connection.query(query, 
         function(err,res){
             if(err) throw err;
