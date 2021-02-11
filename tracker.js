@@ -141,7 +141,7 @@ function addRole() {
     const queryDepartment =  "SELECT * FROM departments";
     connection.query(queryDepartment, (err, results) => {
         if(err) throw err;
-        console.log(results);
+
         inquirer
         .prompt([
             {
@@ -155,8 +155,15 @@ function addRole() {
                 message: "What is the salary?"
             },
             {
-                name: "connectDep",
-                type: "input",
+                name: "addDepartmentRole",
+                type: "list",
+                choices: function() {
+                    const departmentArray = results.map(item => {
+                        const container = {};
+                        container[item.name] = item.name;
+                        return container;
+                    })
+                },
                 message: "What department is this for?"
             },
         ])
