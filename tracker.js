@@ -178,11 +178,13 @@ function addRole() {
 // Add employee
 // =======================
 function addEmployee() {
-    const queryRole =  "SELECT * FROM roles";
+    const queryRole =  "SELECT id, title FROM roles";
     connection.query(queryRole, (err, results) => {
         if(err) throw err;
-        console.log(queryRole);
-        /*inquirer
+        const test = results.map(obj =>  obj.title);
+        console.log( results );
+        console.log( test );
+        inquirer
         .prompt([
             {
                 name: "addFirstName",
@@ -198,20 +200,20 @@ function addEmployee() {
                 name: "choice",
                 type: "list",
                 message: "What is their role?",
-                choices: results.map(obj =>  obj.name)
+                choices: results.map(obj =>  obj.title)
             },
         ])
         .then(function(answer) {
-        let rolID = results.find(obj => obj.name === answer.choice).id;
+        let rolID = results.find(obj => obj.title === answer.choice).id;
         let query = "INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?)";
         console.log(rolID);
-        connection.query(query, [answer.addTitle, answer.addSalary, rolID],
+        connection.query(query, [answer.addFirstName, answer.addLastName, rolID],
             function(err,res){
                 if(err) throw err;
                 console.clear();
                 console.log("Employee added.");
-            });*/
+            });
         startApp();
         })
-//    })
+    })
 }
