@@ -206,55 +206,71 @@ function addEmployee() {
                 choices: results.map(obj =>  obj.title)
             },
         ])
-        .then(function(answer) {
-        let rolID = results.find(obj => obj.title === answer.choice).id;
-        let query = "INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?)";
-        console.log(rolID);
-        connection.query(query, [answer.addFirstName, answer.addLastName, rolID],
-            function(err,res){
-                if(err) throw err;
-                console.clear();
-                console.log("Employee added.");
-            });
-        startApp();
+        .then(function(answer){
+            let rolID = results.find(obj => obj.title === answer.choice).id;
+            let query = "INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?)";
+            connection.query(query, [answer.addFirstName, answer.addLastName, rolID],
+                function(err,res){
+                    if(err) throw err;
+                    console.clear();
+                    console.log("Employee added.");
+                });
+            startApp();
         })
     })
 }
+
+/*
+async function findRoleForUpdate() {
+    //console.log("func exec");
+    let arrayRoles;
+    const queryRole =  "SELECT title FROM roles";
+    connection.query(queryRole, (err, results) => {
+        //console.log("query exec");
+        if(err) throw err;
+       // console.log(results.map(obj => obj.title))
+        arrayRoles = results.map(obj => obj.title);
+       // console.log(arrayRoles);
+        return Promise.resolve(arrayRoles);
+    })
+}
+*/
 
 // Update employee roles
 // =======================
 function updateRole() {
+
     const queryUpdateEmployee =  "SELECT employees.last_name, employees.first_name, roles.title FROM employees JOIN roles ON employees.roles_id = roles.id;";
     connection.query(queryUpdateEmployee, (err, results) => {
         if(err) throw err;
-        inquirer
-        .prompt([
-            {
-                name: "employee",
-                type: "list",
-                message: "Which employee would you like to update?",
-                choices: results.map(obj =>  obj.first_name +" "+ obj.last_name + "\n \t ...currently a " + obj.title + "\n")
-            },
-            {
-                name: "newRole",
-                type: "list",
-                message: "What is their new role?",
-                choices: findRoleForUpdate()
-            },
-        ])
-        .then(function(answer) {
-        console.log("Employee role updated.");
-        startApp();
+
+        const queryRole =  "SELECT title FROM roles";
+        connection.query(queryUpdateEmployee, (error, res) => {
+            if(error) throw error;
+
+            inquirer
+            .prompt([
+                {
+                    name: "employee",
+                    type: "list",
+                    message: "Which employee would you like to update?",
+                    choices: results.map(obj =>  obj.first_name +" "+ obj.last_name + "\n \t ...currently a " + obj.title + "\n")
+                },
+                {
+                    name: "newRole",
+                    type: "list",
+                    message: "What is their new role?",
+                    choices: res.map(obj => obj.title)
+                },
+            ])
+            .then(function(answer) {
+                console.clear();
+                console.log("Employee role updated.");
+                startApp();
+            })
+
         })
+
     })
 }
 
-function findRoleForUpdate() {
-    let arrayRoles = [];
-    const queryRole =  "SELECT * FROM roles";
-    connection.query(queryRole, (err, results) => {
-        if(err) throw err
-        results.push(arrayRoles)
-    })
-    return arrayRoles
-}
