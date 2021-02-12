@@ -96,7 +96,7 @@ function viewAllDepartments() {
 // View all roles
 // =======================
 function viewAllRoles() {
-    let query = "SELECT * FROM roles";
+    let query = "SELECT roles.title, departments.name FROM roles JOIN departments ON departments.id = roles.departments_id ORDER BY 2;";
     connection.query(query, 
         function(err,res){
             if(err) throw err;
@@ -108,7 +108,7 @@ function viewAllRoles() {
 // View all employees
 // =======================
 function viewAllEmployees() {
-    let query = "SELECT * FROM employees";
+    let query = "SELECT employees.last_name, employees.first_name, roles.title, roles.salary FROM employees JOIN roles ON employees.roles_id = roles.id;";
     connection.query(query, 
         function(err,res){
             if(err) throw err;
@@ -143,7 +143,7 @@ function addDepartment() {
 // Add a role
 // =======================
 function addRole() {
-    const queryDepartment =  "SELECT * FROM departments";
+    const queryDepartment =  "SELECT id, name FROM departments";
     connection.query(queryDepartment, (err, results) => {
         if(err) throw err;
 
@@ -264,13 +264,18 @@ function updateRole() {
                 },
             ])
             .then(function(answer){
-                let empID = answer.employee
-                let ID = empID.substring(empID.indexOf('#'))
-                console.log(ID)
-
-                //console.clear();
-                console.log("Employee role updated.");
-                //startApp();
+                let empID = answer.employee;
+                let eID = empID.substring(empID.indexOf('#') + 1);
+                let newRoleID = answer.newRole;
+                let rID = newRoleID.substring(newRoleID.indexOf('#') + 1);
+                let query = "UPDATE employees SET roles_id=? WHERE id=?";
+                connection.query(query, [rID, eID],
+                    function(err, res){
+                    if(err) throw err;
+                    console.clear();
+                    console.log("Employee role updated.");
+                })
+                startApp();
             })
 
         })
