@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "11211121",
+    password: "",
     database: "companyDB"
 });
 
@@ -240,12 +240,12 @@ async function findRoleForUpdate() {
 // =======================
 function updateRole() {
 
-    const queryUpdateEmployee =  "SELECT employees.last_name, employees.first_name, roles.title FROM employees JOIN roles ON employees.roles_id = roles.id;";
+    const queryUpdateEmployee =  "SELECT employees.id, employees.last_name, employees.first_name, roles.title FROM employees JOIN roles ON employees.roles_id = roles.id;";
     connection.query(queryUpdateEmployee, (err, results) => {
         if(err) throw err;
 
-        const queryRole =  "SELECT title FROM roles";
-        connection.query(queryUpdateEmployee, (error, res) => {
+        const queryRole =  "SELECT * FROM roles";
+        connection.query(queryRole, (error, res) => {
             if(error) throw error;
 
             inquirer
@@ -254,19 +254,23 @@ function updateRole() {
                     name: "employee",
                     type: "list",
                     message: "Which employee would you like to update?",
-                    choices: results.map(obj =>  obj.first_name +" "+ obj.last_name + "\n \t ...currently a " + obj.title + "\n")
+                    choices: results.map(obj =>  obj.first_name +" "+ obj.last_name + " #"+ obj.id)
                 },
                 {
                     name: "newRole",
                     type: "list",
-                    message: "What is their new role?",
-                    choices: res.map(obj => obj.title)
+                    message: "What will be their new role?",
+                    choices: res.map(obj => obj.title + " #" + obj.id)
                 },
             ])
-            .then(function(answer) {
-                console.clear();
+            .then(function(answer){
+                let empID = answer.employee
+                let ID = empID.substring(empID.indexOf('#'))
+                console.log(ID)
+
+                //console.clear();
                 console.log("Employee role updated.");
-                startApp();
+                //startApp();
             })
 
         })
