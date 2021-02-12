@@ -38,6 +38,7 @@ function startApp() {
             "Add a department.",
             "Add a role.",
             "Add an employee.",
+            "Update employee role.",
             "Exit."
         ]
     })
@@ -66,6 +67,10 @@ function startApp() {
 
           case "Add an employee.":
           addEmployee();
+          break;
+
+          case "Update employee role.":
+          updateRole();
           break;
 
           case "Exit.":
@@ -175,15 +180,13 @@ function addRole() {
         })
     })
 }
+
 // Add employee
 // =======================
 function addEmployee() {
     const queryRole =  "SELECT id, title FROM roles";
     connection.query(queryRole, (err, results) => {
         if(err) throw err;
-        const test = results.map(obj =>  obj.title);
-        console.log( results );
-        console.log( test );
         inquirer
         .prompt([
             {
@@ -217,3 +220,39 @@ function addEmployee() {
         })
     })
 }
+
+// Update employee roles
+// =======================
+function updateRole() {
+    const queryUpdateEmployee =  "SELECT CONCAT(first_name, ' ', last_name) AS name FROM employees";
+    connection.query(queryUpdateEmployee, (err, results) => {
+        if(err) throw err;
+        inquirer
+        .prompt([
+            {
+                name: "choice",
+                type: "list",
+                message: "Which employee would you like to update?",
+                choices: results.map(obj =>  obj.name)
+            },
+            {
+                name: "choice",
+                type: "list",
+                message: "What is their role?",
+                choices: findRoleForUpdate()
+            },
+        ])
+        .then(function(answer) {
+        let rolID = results.find(obj => obj.name === answer.choice).id;
+        let query = ""
+        connection.query(query, [answer.addFirstName, answer.addLastName, rolID],
+            function(err,res){
+                if(err) throw err;
+                console.clear();
+                console.log("Employee role updated.");
+            });
+        startApp();
+        })
+    })
+}
+
