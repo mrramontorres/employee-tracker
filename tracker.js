@@ -165,13 +165,53 @@ function addRole() {
         let depID = results.find(obj => obj.name === answer.choice).id;
         let query = "INSERT INTO roles (title, salary, departments_id) VALUES (?, ?, ?)";
         console.log(depID);
-        /*connection.query(query, [answer.addTitle, answer.addSalary, depID],
+        connection.query(query, [answer.addTitle, answer.addSalary, depID],
             function(err,res){
                 if(err) throw err;
                 console.clear();
                 console.log("Role added.");
-            });*/
+            });
         startApp();
         })
     })
+}
+// Add employee
+// =======================
+function addEmployee() {
+    const queryRole =  "SELECT * FROM roles";
+    connection.query(queryRole, (err, results) => {
+        if(err) throw err;
+        console.log(queryRole);
+        /*inquirer
+        .prompt([
+            {
+                name: "addFirstName",
+                type: "input",
+                message: "What's the employee's first name?"
+            },
+            {
+                type: "input",
+                name: "addLastName",
+                message: "What's the employee's last name?"
+            },
+            {
+                name: "choice",
+                type: "list",
+                message: "What is their role?",
+                choices: results.map(obj =>  obj.name)
+            },
+        ])
+        .then(function(answer) {
+        let rolID = results.find(obj => obj.name === answer.choice).id;
+        let query = "INSERT INTO employees (first_name, last_name, roles_id) VALUES (?, ?, ?)";
+        console.log(rolID);
+        connection.query(query, [answer.addTitle, answer.addSalary, rolID],
+            function(err,res){
+                if(err) throw err;
+                console.clear();
+                console.log("Employee added.");
+            });*/
+        startApp();
+        })
+//    })
 }
