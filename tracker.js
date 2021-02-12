@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "",
+    password: "11211121",
     database: "companyDB"
 });
 
@@ -202,7 +202,7 @@ function addEmployee() {
             {
                 name: "choice",
                 type: "list",
-                message: "What is their role?",
+                message: "What is their new role?",
                 choices: results.map(obj =>  obj.title)
             },
         ])
@@ -227,34 +227,34 @@ function updateRole() {
     const queryUpdateEmployee =  "SELECT employees.last_name, employees.first_name, roles.title FROM employees JOIN roles ON employees.roles_id = roles.id;";
     connection.query(queryUpdateEmployee, (err, results) => {
         if(err) throw err;
-        console.log(results);
-        /*
         inquirer
         .prompt([
             {
-                name: "choice",
+                name: "employee",
                 type: "list",
                 message: "Which employee would you like to update?",
-                choices: results.map(obj =>  obj.name)
+                choices: results.map(obj =>  obj.first_name +" "+ obj.last_name + "\n \t ...currently a " + obj.title + "\n")
             },
             {
-                name: "choice",
+                name: "newRole",
                 type: "list",
-                message: "What is their role?",
+                message: "What is their new role?",
                 choices: findRoleForUpdate()
             },
         ])
         .then(function(answer) {
-        let rolID = results.find(obj => obj.name === answer.choice).id;
-        let query = ""
-        connection.query(query, [answer.addFirstName, answer.addLastName, rolID],
-            function(err,res){
-                if(err) throw err;
-                console.clear();
-                console.log("Employee role updated.");
-            }); */
+        console.log("Employee role updated.");
         startApp();
-//        })
+        })
     })
 }
 
+function findRoleForUpdate() {
+    let arrayRoles = [];
+    const queryRole =  "SELECT * FROM roles";
+    connection.query(queryRole, (err, results) => {
+        if(err) throw err
+        results.push(arrayRoles)
+    })
+    return arrayRoles
+}
