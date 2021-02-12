@@ -224,9 +224,11 @@ function addEmployee() {
 // Update employee roles
 // =======================
 function updateRole() {
-    const queryUpdateEmployee =  "SELECT CONCAT(first_name, ' ', last_name) AS name FROM employees";
+    const queryUpdateEmployee =  "SELECT employees.last_name, employees.first_name, roles.title FROM employees JOIN roles ON employees.roles_id = roles.id;";
     connection.query(queryUpdateEmployee, (err, results) => {
         if(err) throw err;
+        console.log(results);
+        /*
         inquirer
         .prompt([
             {
@@ -250,9 +252,9 @@ function updateRole() {
                 if(err) throw err;
                 console.clear();
                 console.log("Employee role updated.");
-            });
+            }); */
         startApp();
-        })
+//        })
     })
 }
 
